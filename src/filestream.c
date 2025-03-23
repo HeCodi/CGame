@@ -4,28 +4,30 @@ size_t buffer_size = 32;
 
 size_t* read_text_in_filestream(FILE* filestream, char*** ptext, size_t** lines_size) {
 	size_t local_buffer_size = buffer_size;
-	char* data = NULL, * buffer = (char*)malloc(local_buffer_size);
+	char* data = NULL, *buffer = (char*)malloc(local_buffer_size);
 	size_t line_index = 0, *text_size = (size_t*)malloc(sizeof(size_t));
 
 	if (buffer == NULL)
-		return 0;
-
-	
+		*text_size = 0;
+		return text_size;
 
 	if (text_size == NULL) {
 		free(buffer);
-		return 0;
+		*text_size = 0;
+		return text_size;
 	}
 
 	if (((*lines_size) = (size_t*)malloc(sizeof(size_t))) == NULL) {
 		free(buffer);
-		return 0;
+		*text_size = 0;
+		return text_size;
 	}
 
 	if ((*ptext = (char*)malloc(sizeof(char**))) == NULL) {
 		free(*lines_size);
 		free(buffer);
-		return 0;
+		*text_size = 0;
+		return text_size;
 	}
 
 	**lines_size = 0;
@@ -48,8 +50,8 @@ size_t* read_text_in_filestream(FILE* filestream, char*** ptext, size_t** lines_
 				free(data);
 				free(*ptext);
 				free(buffer);
-
-				return 0;
+				*text_size = 0;
+				return text_size;
 			}
 			data = data_tmp;
 			data_tmp = NULL;
@@ -74,7 +76,8 @@ size_t* read_text_in_filestream(FILE* filestream, char*** ptext, size_t** lines_
 						free(*ptext);
 						free(buffer);
 
-						return 0;
+						*text_size = 0;
+						return text_size;
 					}
 					for (size_t i_pline = 0; i_pline <= line_index; i_pline++) {
 						temp_ptext[i_pline] = (*ptext)[i_pline];
@@ -88,7 +91,8 @@ size_t* read_text_in_filestream(FILE* filestream, char*** ptext, size_t** lines_
 						free(data);
 						free(*ptext);
 						free(buffer);
-						return 0;
+						*text_size = 0;
+						return text_size;
 					}
 					for (size_t i_line_size = 0; i_line_size <= line_index; i_line_size++) {
 						temp_lines_size[i_line_size] = (*lines_size)[i_line_size];
@@ -105,7 +109,7 @@ size_t* read_text_in_filestream(FILE* filestream, char*** ptext, size_t** lines_
 		}
 	}
 	free(buffer);
-
+	
 	return text_size;
 }
 
