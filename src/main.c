@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "..\include\map_hendler.h"
+#include "map_handler.h"
 
 
 int main() {

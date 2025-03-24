@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "..\include\filestream.h"
+#include "filestream.h"
 
 char **map;
 size_t *lines_size,  map_text_size;
