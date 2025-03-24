@@ -68,7 +68,7 @@ size_t* read_text_in_filestream(FILE* filestream, char*** ptext, size_t** lines_
 
 			if ((*text_size) >= 2) {
 				if (data[(*text_size) - 2] == '\n') {
-					char** temp_ptext = (char**)realloc((*ptext), sizeof(char*) * (line_index + 2));
+					char** temp_ptext = (char**)malloc((sizeof(char*) * (line_index + 2)));
 
 					if (temp_ptext == NULL) {
 						free(*lines_size);
@@ -82,10 +82,11 @@ size_t* read_text_in_filestream(FILE* filestream, char*** ptext, size_t** lines_
 					for (size_t i_pline = 0; i_pline <= line_index; i_pline++) {
 						temp_ptext[i_pline] = (*ptext)[i_pline];
 					}
+					free(*ptext);
 					*ptext = temp_ptext;
 					temp_ptext = NULL;
 
-					size_t* temp_lines_size = (size_t*)realloc(*lines_size, sizeof(size_t) * (line_index + 2));
+					size_t* temp_lines_size = (size_t*)malloc(sizeof(size_t) * (line_index + 2));
 					if (temp_lines_size == NULL) {
 						free(*lines_size);
 						free(data);
@@ -97,8 +98,8 @@ size_t* read_text_in_filestream(FILE* filestream, char*** ptext, size_t** lines_
 					for (size_t i_line_size = 0; i_line_size <= line_index; i_line_size++) {
 						temp_lines_size[i_line_size] = (*lines_size)[i_line_size];
 					}
-
-					*lines_size = temp_lines_size;
+					free(*lines_size);
+					*lines_size = temp_lines_size;			
 					temp_lines_size = NULL;
 
 					line_index++;

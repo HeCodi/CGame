@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "..\include\filestream.h"
-#include "..\include\map_hendler.h"
+
+char **map;
+size_t *lines_size,  map_text_size;
 
 int print_map(){    
     if(map_text_size == 0) 
