@@ -1,29 +1,29 @@
 #include <stdio.h>
+#include "string_helper.h"
 #include "filestream.h"
 
 char **map;
-size_t *lines_size,  map_text_size;
+size_t *map_line_sizies, *map_lines_count;
 
-int print_map(){    
-    if(map_text_size == 0) 
-        return 0;
-
-    system("cls");
-    for(size_t i = 0, printed; printed < map_text_size; i++){
-        printed += lines_size[i];
-
-        for(size_t j = 0; j < lines_size[i]; j++){
-            putchar(map[i][j]);
+int print_map(){  
+    for(size_t i = 0; i < *map_lines_count; i++){
+        for(size_t j = 0; j < map_line_sizies[i]; j++){
+            putchar(map[i][j]);       
         }
+        putchar('\n'); 
     }
-    return 1;
 }
 
 int update_map(const char* path){
-    FILE fs = *(create_filestream(path));
+    FILE *fs = (create_filestream(path));
+    
+    size_t map_text_size;
+    char *map_text;
 
-    map_text_size = *(read_text_in_filestream(&fs, &map, &lines_size));
+    
+    map_text_size = read_text_in_filestream(fs, &map_text);
+    map = convert_text(map_text, map_text_size, &map_line_sizies, &map_lines_count);
 
-    fclose(&fs);
+    fclose(fs);
     return map_text_size;
 }

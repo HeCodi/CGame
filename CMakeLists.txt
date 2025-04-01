@@ -5,9 +5,13 @@ project(CGame)
 include_directories(include)
 
 set(SOURCE_FILES
-    src/main.c
-    src/map_handler.c
     src/filestream.c
+    src/main.c
+    src/map_handler.c   
+    src/string_helper/string_helper.c   
+    src/string_helper/string_helper_test.c  
 )
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c90 -Wall -O3")
 
 add_executable(CGame ${SOURCE_FILES})
