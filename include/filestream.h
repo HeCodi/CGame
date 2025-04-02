@@ -4,6 +4,6 @@
 
 extern size_t buffer_size;
 
-FILE *create_filestream(const char* filepath);
+FILE *create_filestream(const char *filepath);
 
-size_t read_text_in_filestream(FILE* filestream, char** ptext);
+size_t *read_text_in_filestream(FILE *filestream, char **ptext);

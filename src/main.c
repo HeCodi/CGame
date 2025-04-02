@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include "map_handler.h"
 
-int main() {
+int main()
+{
 	update_map("map.txt");
-	print_map();
+	while (1)
+	{
+		print_map();
+	}
 }

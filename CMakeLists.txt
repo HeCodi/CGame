@@ -8,8 +8,7 @@ set(SOURCE_FILES
     src/filestream.c
     src/main.c
     src/map_handler.c   
-    src/string_helper/string_helper.c   
-    src/string_helper/string_helper_test.c  
+    src/string_helper.c    
 )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c90 -Wall -O3")
