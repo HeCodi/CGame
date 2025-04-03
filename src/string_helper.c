@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "map_handler.h"
 
 char **convert_text(char *text, size_t text_size, size_t **lines_size, size_t **lines_count)
 {
@@ -59,4 +60,20 @@ char **convert_text(char *text, size_t text_size, size_t **lines_size, size_t **
     }
 
     return lines;
+}
+
+VECTOR *find_char_in_text(char ch, char **text, size_t *lines_size, size_t lines_count)
+{
+    VECTOR *pos = malloc(sizeof(VECTOR));
+
+    pos->x = 0;
+    pos->y = 0;
+
+    for (size_t i = 0; i < lines_count; i++, pos->y++, pos->x = 0)
+        for (size_t j = 0; j < lines_size[i]; j++, pos->x++)
+            if (text[i][j] == ch)
+                return pos;
+
+    pos->y = lines_count;
+    return pos;
 }

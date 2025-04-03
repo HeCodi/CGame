@@ -1,33 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "string_helper.h"
+#include "map_handler.h"
 #include "filestream.h"
 
 #define player_char 'C'
-
-typedef struct vector VECTOR;
-typedef struct vector
-{
-    size_t x;
-    size_t y;
-};
-
-char map_printed = 0;
+#define start_char 'S'
+#define finish_char 'F'
 
 char **base_map;
 
 size_t *map_line_sizies, *map_lines_count, *map_text_size;
-VECTOR start_map_position;
-
-VECTOR player_position;
+VECTOR start_map_position, player_position, start_position, finish_position;
 
 char *buffer_1, *buffer_2;
 char *frontbuffer, *backbuffer;
 
-int update_buffer();
+int process_move(VECTOR new_player_position)
+{
+    if (new_player_position.y > *map_lines_count)
+        return -1;
+
+    if (new_player_position.x > map_lines_count[new_player_position.y])
+        return -1;
+
+    if (base_map[new_player_position.y][new_player_position.x] == '#')
+        return 0;
+
+    player_position = new_player_position;
+    return 1;
+}
 
 int print_map()
 {
+    printf("\e[?25l");
     size_t i_buffer = 0;
     int bytes_write = sprintf(backbuffer, "\033[2J");
     i_buffer += bytes_write - 1;
@@ -58,7 +64,6 @@ int print_map()
 
     printf("%s", frontbuffer);
     fflush(stdout);
-    map_printed = 1;
 }
 
 int update_map(const char *path)
@@ -70,6 +75,11 @@ int update_map(const char *path)
     map_text_size = read_text_in_filestream(fs, &map_text);
     base_map = convert_text(map_text, *map_text_size, &map_line_sizies, &map_lines_count);
     fclose(fs);
+
+    start_position = *find_char_in_text(start_char, base_map, map_line_sizies, *map_lines_count);
+    finish_position = *find_char_in_text(finish_char, base_map, map_line_sizies, *map_lines_count);
+
+    player_position = start_position;
 
     update_buffer();
 
