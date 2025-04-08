@@ -4,12 +4,11 @@
 
 int main()
 {
-	update_map("map.txt");
+	load_map("map.txt");
 	set_move_input('w', 's', 'd', 'a');
 
 	while (1)
 	{
 		process_input(read_input());
-		print_map();
 	}
 }

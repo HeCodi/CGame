@@ -77,3 +77,60 @@ VECTOR *find_char_in_text(char ch, char **text, size_t *lines_size, size_t lines
     pos->y = lines_count;
     return pos;
 }
+
+VECTOR *find_chars_in_text(char ch, char **text, size_t *lines_size, size_t lines_count, size_t count, size_t *count_finded)
+{
+    if (count == 0)
+        return NULL;
+
+    VECTOR *pos = NULL;
+    *count_finded = 0;
+
+    for (size_t line = 0; *count_finded < count; (*count_finded)++)
+    {
+        VECTOR *tmp_pos = (VECTOR *)malloc(sizeof(VECTOR) * (*count_finded + 1));
+
+        if (tmp_pos == NULL)
+            return pos;
+
+        if (pos != NULL)
+            for (size_t i = 0; i < *count_finded; i++)
+            {
+                tmp_pos[i] = pos[i];
+            }
+
+        if (tmp_pos == NULL)
+            return NULL;
+
+        if (*count_finded == 0)
+            tmp_pos[*count_finded].x = 0;
+        else
+            tmp_pos[*count_finded].x = tmp_pos[*count_finded - 1].x + 1;
+
+        tmp_pos[*count_finded].y = line;
+        char exit = 1;
+
+        for (; line < lines_count; line++, tmp_pos[*count_finded].y++, tmp_pos[*count_finded].x = 0)
+        {
+            for (size_t j = tmp_pos[*count_finded].x; j < lines_size[line]; j++, tmp_pos[*count_finded].x++)
+            {
+                if (text[line][j] == ch)
+                {
+                    exit = 0;
+                    break;
+                }
+            }
+            if (!exit)
+                break;
+        }
+        if (exit)
+        {
+            free(tmp_pos);
+            break;
+        }
+
+        free(pos);
+        pos = tmp_pos;
+    }
+    return pos;
+}
