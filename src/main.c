@@ -7,7 +7,7 @@ int main()
 	load_map("map.txt");
 	set_move_input('w', 's', 'd', 'a');
 
-	while (1)
+	for (;;)
 	{
 		process_input(read_input());
 	}

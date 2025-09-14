@@ -8,17 +8,22 @@ typedef struct vector
     size_t y;
 } VECTOR;
 
-extern char **base_map;
+extern struct MapData
+{
+    char **base_map;
 
-extern size_t coins;
-extern size_t *map_line_sizies, *map_lines_count, *map_text_size, *point_count;
+    size_t *coins;
 
-extern VECTOR start_map_position, player_position, start_position, finish_position, *points;
+    size_t *map_line_sizies, *map_lines_count, *map_text_size, *point_count, *map_end;
+    VECTOR *start_map_position, *player_position, *start_position, *finish_position, *points;
+} MapData;
+extern struct BufferData
+{
+    char *buffer_1, *buffer_2;
+    char *frontbuffer, *backbuffer;
+} BufferData;
 
-extern char *buffer_1, *buffer_2;
-extern char *frontbuffer, *backbuffer;
-
-int process_move(VECTOR new_player_position);
+int process_move(VECTOR *new_player_position);
 int update_map();
 int update_backpack();
 int update_buffer();
